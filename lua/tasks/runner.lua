@@ -146,8 +146,8 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
     on_start = quickfix_output and vim.schedule_wrap(function()
       vim.fn.setqflist({}, ' ', { title = command.cmd .. ' ' .. table.concat(args, ' ') })
       if notifications.on_enter then
-        vim.notify("Task started", vim.log.levels.INFO, {
-          title = task_name
+        vim.notify(string.format("Task %s started", task_name), vim.log.levels.INFO, {
+          title = module_type
         })
       end
 
@@ -169,7 +169,7 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
           level = vim.log.levels.ERROR
         end
 
-        vim.notify(string.format(msg, module_type), level, {
+        vim.notify(string.format(msg, task_name), level, {
           title = module_type
         })
       end

@@ -16,6 +16,10 @@ local config = {
         dap_name = 'lldb',
       },
     },
+    notifications = {
+      on_exit = true,
+      on_enter = true
+    },
     save_before_run = true,
     params_file = 'neovim.json',
     quickfix = {

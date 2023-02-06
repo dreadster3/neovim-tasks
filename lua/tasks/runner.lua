@@ -9,9 +9,9 @@ local last_job
 local function append_to_quickfix(lines, errorformat)
   vim.fn.setqflist({}, 'a', { efm = errorformat, lines = lines })
   -- Scrolls the quickfix buffer if not active
-  if vim.bo.buftype ~= 'quickfix' then
-    vim.api.nvim_command('cbottom')
-  end
+  -- if vim.bo.buftype ~= 'quickfix' then
+  --   vim.api.nvim_command('cbottom')
+  -- end
 end
 
 ---@param errorformat? string

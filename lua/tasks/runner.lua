@@ -95,7 +95,7 @@ end
 ---@param module_config table: Module configuration.
 ---@param addition_args table?: Additional arguments that will be applied to the last command.
 ---@param previous_job table?: Previous job to read data from, used by this function for recursion.
-function runner.chain_commands(task_name, commands, module_config, addition_args, previous_job)
+function runner.chain_commands(module_type, task_name, commands, module_config, addition_args, previous_job)
   local command = commands[1]
   if vim.is_callable(command) then
     command = command(module_config, previous_job)
@@ -161,16 +161,16 @@ function runner.chain_commands(task_name, commands, module_config, addition_args
         append_to_quickfix({ 'Exited with code ' .. (signal == 0 and code or 128 + signal) })
       end
       if notifications.on_exit then
-        local msg = "Task completed with success"
+        local msg = "Task %s completed with success"
         local level = vim.log.levels.INFO
 
         if code ~= 0 or signal ~= 0 then
-          msg = "Task failed"
+          msg = "Task %s failed"
           level = vim.log.levels.ERROR
         end
 
-        vim.notify(msg, level, {
-          title = task_name
+        vim.notify(string.format(msg, module_type), level, {
+          title = module_type
         })
       end
       if code == 0 and signal == 0 and command.after_success then
@@ -190,7 +190,7 @@ function runner.chain_commands(task_name, commands, module_config, addition_args
   end
 
   if #commands ~= 1 then
-    job:after_success(vim.schedule_wrap(function() runner.chain_commands(task_name, vim.list_slice(commands, 2), module_config, addition_args, job) end))
+    job:after_success(vim.schedule_wrap(function() runner.chain_commands(module_type, task_name, vim.list_slice(commands, 2), module_config, addition_args, job) end))
   end
   last_job = job
 end

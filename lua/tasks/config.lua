@@ -18,7 +18,7 @@ local config = {
     },
     notifications = {
       on_exit = true,
-      on_enter = true
+      on_enter = false
     },
     save_before_run = true,
     params_file = 'neovim.json',

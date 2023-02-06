@@ -145,6 +145,7 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
     enable_recording = #commands ~= 1,
     on_start = quickfix_output and vim.schedule_wrap(function()
       vim.fn.setqflist({}, ' ', { title = command.cmd .. ' ' .. table.concat(args, ' ') })
+
       if notifications.on_enter then
         vim.notify(string.format("Task %s started", task_name), vim.log.levels.INFO, {
           title = module_type
@@ -160,6 +161,7 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
       if quickfix_output then
         append_to_quickfix({ 'Exited with code ' .. (signal == 0 and code or 128 + signal) })
       end
+
       if notifications.on_exit then
         local msg = "Task %s completed with success"
         local level = vim.log.levels.INFO
@@ -173,11 +175,13 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
           title = module_type
         })
       end
+
       if code == 0 and signal == 0 and command.after_success then
         command.after_success()
-      elseif only_on_error then
+      elseif (code ~= 0 or signal ~= 0) and only_on_error then
         vim.api.nvim_command(string.format('%s copen %d', config.quickfix.pos, config.quickfix.height))
       end
+
     end),
   })
 

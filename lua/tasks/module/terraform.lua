@@ -6,7 +6,7 @@ local function terraform_apply(module_config, _)
   end
 
   return {
-    cmd = module_config,
+    cmd = module_config.cmd,
     args = args
   }
 end

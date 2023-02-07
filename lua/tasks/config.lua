@@ -15,6 +15,14 @@ local config = {
       cargo = {
         dap_name = 'lldb',
       },
+      conan = {
+        cmd = "conan",
+        build_type = "debug"
+      },
+      terraform = {
+        cmd = "terraform",
+        auto_approve = false
+      }
     },
     notifications = {
       on_exit = true,

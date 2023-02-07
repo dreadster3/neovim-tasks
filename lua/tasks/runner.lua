@@ -186,6 +186,8 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
       local msg = "Task %s completed with success"
       local level = vim.log.levels.INFO
 
+      vim.notify(tostring(job))
+
       if job.code ~= 0 or job.signal ~= 0 then
         msg = "Task %s failed"
         level = vim.log.levels.ERROR

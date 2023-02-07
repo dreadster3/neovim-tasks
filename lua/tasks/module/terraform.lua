@@ -1,9 +1,5 @@
 local function terraform_apply(module_config, _)
-  local args = {"apply"}
-
-  if module_config.auto_approve then
-    table.insert(args, "--auto-approve")
-  end
+  local args = {"apply", "-auto-approve"}
 
   return {
     cmd = module_config.cmd,
@@ -31,8 +27,7 @@ end
 
 local terraform = {
   params = {
-    'cmd',
-    auto_approve = {true, false}
+    'cmd'
   },
   condition = function ()
     return true

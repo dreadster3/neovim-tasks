@@ -162,6 +162,19 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
         append_to_quickfix({ 'Exited with code ' .. (signal == 0 and code or 128 + signal) })
       end
 
+      if notifications.on_exit and #commands == 1 then
+        local msg = "Task %s completed with success"
+        local level = vim.log.levels.INFO
+
+        if code ~= 0 or signal ~= 0 then
+          msg = "Task %s failed"
+          level = vim.log.levels.ERROR
+        end
+
+        vim.notify(string.format(msg, task_name), level, {
+          title = module_type
+        })
+      end
 
       if code == 0 and signal == 0 and command.after_success then
         command.after_success()
@@ -182,20 +195,6 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
 
   if #commands ~= 1 then
     job:after_success(vim.schedule_wrap(function() runner.chain_commands(module_type, task_name, vim.list_slice(commands, 2), module_config, addition_args, job) end))
-  elseif notifications.on_exit then
-      local msg = "Task %s completed with success"
-      local level = vim.log.levels.INFO
-
-      vim.notify(tostring(job.code))
-
-      if job.code ~= 0 or job.signal ~= 0 then
-        msg = "Task %s failed"
-        level = vim.log.levels.ERROR
-      end
-
-      vim.notify(string.format(msg, task_name), level, {
-        title = module_type
-      })
   end
   last_job = job
 end

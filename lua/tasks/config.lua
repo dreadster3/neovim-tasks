@@ -33,6 +33,7 @@ local config = {
     quickfix = {
       pos = 'botright',
       height = 12,
+      only_on_error = false
     },
     dap_open_command = function() return require('dap').repl.open() end,
   },

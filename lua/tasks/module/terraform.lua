@@ -4,7 +4,6 @@ local function terraform_apply(module_config, _)
   return {
     cmd = module_config.cmd,
     args = args,
-    only_on_error = module_config.only_on_error
   }
 end
 
@@ -24,7 +23,6 @@ local function terraform_validate(module_config, _)
   return {
     cmd = module_config.cmd,
     args = args,
-    only_on_error = module_config.only_on_error
   }
 end
 
@@ -34,14 +32,12 @@ local function terraform_init(module_config, _)
   return {
     cmd = module_config.cmd,
     args = args,
-    only_on_error = module_config.only_on_error
   }
 end
 
 local terraform = {
   params = {
     'cmd',
-    only_on_error = {true, false}
   },
   condition = function ()
     return true

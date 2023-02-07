@@ -135,7 +135,7 @@ function runner.chain_commands(module_type, task_name, commands, module_config, 
   end
 
   local notifications = config.notifications
-  local only_on_error = command.only_on_error or false
+  local only_on_error = command.only_on_error or (command.only_on_error == nil and config.quickfix.only_on_error)
   local quickfix_output = not command.ignore_stdout or not command.ignore_stderr
   local job = Job:new({
     command = command.cmd,

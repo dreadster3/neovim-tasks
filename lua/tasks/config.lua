@@ -21,7 +21,6 @@ local config = {
       },
       terraform = {
         cmd = "terraform",
-        only_on_error = true
       }
     },
     notifications = {

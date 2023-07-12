@@ -150,9 +150,13 @@ local function configure(module_config, _)
 
     local args = {
         '-B', build_dir.filename, '-D',
-        'CMAKE_TOOLCHAIN_FILE=' .. conan_toolchain.filename, '-D',
         'CMAKE_BUILD_TYPE=' .. module_config.build_type
     }
+
+    if vim.fn.filereadable(conan_toolchain.filename) == 1 then
+        table.insert(args, '-D')
+        table.insert(args, 'CMAKE_TOOLCHAIN_FILE=' .. conan_toolchain.filename)
+    end
 
     return {
         cmd = module_config.cmd,
